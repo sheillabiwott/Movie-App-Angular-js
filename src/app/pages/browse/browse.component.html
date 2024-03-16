@@ -1,0 +1,48 @@
+:<div class="browse-page">
+  <app-header></app-header>
+  <div class="banner">
+    <ng-container *ngIf="bannerMovie && bannerMovie.videoKey">
+      <iframe
+        class="banner-video"
+        [src]="
+          domSanitise.bypassSecurityTrustResourceUrl(
+            'https://www.youtube.com/embed/' + bannerMovie.videoKey + '?autoplay=1&mute=1&showinfo=0&controls=0'
+          )"
+        frameborder="0"
+      ></iframe>
+    </ng-container>
+    <ng-container *ngIf="!bannerMovie || !bannerMovie.videoKey">
+      <img
+        class="banner-img"
+        [src]="tmdbConfig.imagePath + (bannerMovie ? bannerMovie.poster_path : '')"
+        alt="banner image"
+      />
+    </ng-container>
+    <div class="banner-movie-info">
+      <h4 class="banner-heading">{{ bannerMovie ? bannerMovie.original_title : '' }}</h4>
+      <p class="banner-description">{{ bannerMovie ? bannerMovie.overview : '' }}</p>
+      <div class="banner-action">
+        <button type="button" class="play-btn" (click)="playVideo(bannerMovie.videoKey)">Play</button>
+        <button type="button" class="info-btn">More Info</button>
+      </div>
+    </div>
+  </div>
+  <div class="movie-categories px-16 relative z-50 -mt-40">
+    <app-movie-category
+      [title]="'Popular'"
+      [movieList]="popularMovies"
+    ></app-movie-category>
+    <app-movie-category
+      [title]="'Top Rated'"
+      [movieList]="topRatedMovies"
+    ></app-movie-category>
+    <app-movie-category
+      [title]="'Upcoming'"
+      [movieList]="upcommingMovies"
+    ></app-movie-category>
+    <app-movie-category
+      [title]="'Now Playing'"
+      [movieList]="nowPlayingMovies"
+    ></app-movie-category>
+  </div>
+</div>
